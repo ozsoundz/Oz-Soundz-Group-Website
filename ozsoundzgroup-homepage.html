@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Oz Soundz Group</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deepest:   #080a08;
+      --bg-dark:      #0e110e;
+      --bg-card:      #111611;
+      --bg-card-2:    #161c16;
+      --neon-teal:    #00f5c8;
+      --neon-amber:   #ffb627;
+      --neon-red:     #ff3c38;
+      --text-primary: #e8ead4;
+      --text-muted:   #7a8070;
+      --text-dim:     #4a5044;
+      --border:       #1e261e;
+      --border-glow:  #00f5c840;
+      --grain-opacity: 0.04;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-deepest);
+      color: var(--text-primary);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* ── GRAIN OVERLAY ─────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: var(--grain-opacity);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── TICKER ────────────────────────────────────────────────── */
+    .ticker-wrap {
+      background: var(--neon-teal);
+      color: #000;
+      overflow: hidden;
+      padding: 7px 0;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 100;
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 35s linear infinite;
+    }
+    .ticker-track span {
+      white-space: nowrap;
+      padding-right: 60px;
+    }
+    .ticker-track span::before {
+      content: '◆';
+      margin-right: 20px;
+      opacity: 0.5;
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── NAV ───────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      background: rgba(8,10,8,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 22px;
+      letter-spacing: 0.12em;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo .logo-bracket {
+      color: var(--neon-teal);
+      font-size: 28px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0; right: 0;
+      height: 1px;
+      background: var(--neon-teal);
+      transform: scaleX(0);
+      transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--neon-teal); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta {
+      background: var(--neon-teal);
+      color: #000 !important;
+      padding: 7px 18px !important;
+      letter-spacing: 0.1em !important;
+      transition: background 0.2s, box-shadow 0.2s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover {
+      background: #00d4ad !important;
+      box-shadow: 0 0 20px var(--neon-teal) !important;
+    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-primary); display: block; }
+
+    /* ── HERO ──────────────────────────────────────────────────── */
+    .hero {
+      min-height: calc(100vh - 92px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left {
+      padding: 80px 60px 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--neon-teal);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--neon-teal);
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(72px, 9vw, 128px);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+    .hero-title .line-teal { color: var(--neon-teal); }
+    .hero-title .line-amber {
+      color: var(--neon-amber);
+      text-shadow: 0 0 40px #ffb62760;
+    }
+    .hero-subtitle {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(16px, 2.2vw, 22px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 420px;
+    }
+    .hero-subtitle em {
+      color: var(--text-primary);
+      font-style: normal;
+      font-weight: 600;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 13px 32px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: var(--neon-teal);
+      color: #000;
+      border-color: var(--neon-teal);
+    }
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--neon-teal);
+      box-shadow: 0 0 30px #00f5c840, inset 0 0 30px #00f5c810;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-primary);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: var(--neon-amber);
+      color: var(--neon-amber);
+    }
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 70% at 60% 40%, #00f5c812 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 80% 80%, #ffb62712 0%, transparent 60%);
+    }
+    .hero-graphic {
+      position: relative;
+      z-index: 2;
+      width: 400px;
+      height: 400px;
+    }
+    /* Animated soundwave SVG graphic */
+    .wave-circle {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid var(--neon-teal);
+      opacity: 0;
+      animation: pulse-ring 4s ease-out infinite;
+    }
+    .wave-circle:nth-child(1) { width: 180px; height: 180px; animation-delay: 0s; }
+    .wave-circle:nth-child(2) { width: 260px; height: 260px; animation-delay: 1s; }
+    .wave-circle:nth-child(3) { width: 340px; height: 340px; animation-delay: 2s; }
+    .wave-circle:nth-child(4) { width: 420px; height: 420px; animation-delay: 3s; }
+    @keyframes pulse-ring {
+      0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.8); }
+      20%  { opacity: 0.4; }
+      100% { opacity: 0; transform: translate(-50%,-50%) scale(1.1); }
+    }
+    .hero-centre-icon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      z-index: 3;
+      filter: drop-shadow(0 0 20px var(--neon-teal));
+    }
+    .hero-stat-bar {
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+      right: 0;
+      display: flex;
+      gap: 48px;
+      z-index: 2;
+    }
+    .hero-stat { }
+    .hero-stat .num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 42px;
+      line-height: 1;
+      color: var(--neon-amber);
+    }
+    .hero-stat .label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ── SECTION SHARED ─────────────────────────────────────────── */
+    section { padding: 100px 60px; }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--neon-teal);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--neon-teal);
+    }
+    .section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(48px, 6vw, 80px);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    .section-title .accent { color: var(--neon-teal); }
+    .section-body {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+    .section-body strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ── MARQUEE DIVIDER ────────────────────────────────────────── */
+    .marquee-divider {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+    .marquee-inner {
+      display: flex;
+      width: max-content;
+      animation: marquee-left 20s linear infinite;
+    }
+    .marquee-inner span {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 28px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      white-space: nowrap;
+      padding-right: 60px;
+    }
+    .marquee-inner span.hi {
+      color: var(--neon-amber);
+    }
+    @keyframes marquee-left {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── ABOUT / PURPOSE ─────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-box {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, #00f5c808 0%, transparent 40%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 39px,
+          var(--border) 39px,
+          var(--border) 40px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 39px,
+          var(--border) 39px,
+          var(--border) 40px
+        );
+    }
+    .about-box-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-icon-large {
+      font-size: 160px;
+      opacity: 0.06;
+      line-height: 1;
+    }
+    .about-tag {
+      position: absolute;
+      bottom: -16px;
+      right: -16px;
+      background: var(--neon-amber);
+      color: #000;
+      padding: 12px 20px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+    }
+    .about-tag-2 {
+      position: absolute;
+      top: 20px;
+      left: -1px;
+      background: var(--neon-teal);
+      color: #000;
+      padding: 6px 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── PILLAR LIST ──────────────────────────────────────────────── */
+    .pillar-list {
+      list-style: none;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .pillar-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+      cursor: default;
+    }
+    .pillar-item:first-child { border-top: 1px solid var(--border); }
+    .pillar-item:hover { background: #00f5c805; }
+    .pillar-num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 32px;
+      color: var(--text-dim);
+      line-height: 1;
+      min-width: 40px;
+    }
+    .pillar-content {}
+    .pillar-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .pillar-desc {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── BUSINESSES ───────────────────────────────────────────────── */
+    .biz-section {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .biz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+    }
+    .biz-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .biz-card {
+      background: var(--bg-deepest);
+      padding: 48px 36px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      display: block;
+    }
+    .biz-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .biz-card:nth-child(1)::before { background: var(--neon-teal); }
+    .biz-card:nth-child(2)::before { background: var(--neon-amber); }
+    .biz-card:nth-child(3)::before { background: var(--neon-red); }
+    .biz-card:hover { background: var(--bg-card-2); }
+    .biz-card:hover::before { transform: scaleX(1); }
+    .biz-icon {
+      font-size: 44px;
+      margin-bottom: 24px;
+      display: block;
+    }
+    .biz-card-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .biz-card:nth-child(1) .biz-card-label { color: var(--neon-teal); }
+    .biz-card:nth-child(2) .biz-card-label { color: var(--neon-amber); }
+    .biz-card:nth-child(3) .biz-card-label { color: var(--neon-red); }
+    .biz-card-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 32px;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .biz-card-body {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .biz-arrow {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      font-size: 20px;
+      color: var(--text-dim);
+      transition: color 0.3s, transform 0.3s;
+    }
+    .biz-card:hover .biz-arrow { transform: translate(4px, -4px); }
+    .biz-card:nth-child(1):hover .biz-arrow { color: var(--neon-teal); }
+    .biz-card:nth-child(2):hover .biz-arrow { color: var(--neon-amber); }
+    .biz-card:nth-child(3):hover .biz-arrow { color: var(--neon-red); }
+
+    /* ── COMMUNITY ────────────────────────────────────────────────── */
+    .community-grid {
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .community-feature {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 48px;
+      position: relative;
+    }
+    .community-feature::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--neon-teal), var(--neon-amber));
+    }
+    .cf-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--neon-teal);
+      margin-bottom: 20px;
+    }
+    .cf-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 54px;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .cf-body {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .community-links {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .community-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .community-link:hover {
+      background: #00f5c808;
+      border-color: var(--border-glow);
+    }
+    .cl-left { display: flex; align-items: center; gap: 16px; }
+    .cl-icon { font-size: 24px; }
+    .cl-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+    .cl-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+    .cl-arrow {
+      color: var(--text-dim);
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+    .community-link:hover .cl-arrow { color: var(--neon-teal); }
+
+    /* ── MANIFESTO BAND ──────────────────────────────────────────── */
+    .manifesto {
+      background: var(--neon-teal);
+      padding: 80px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .manifesto::before {
+      content: '"';
+      position: absolute;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 600px;
+      color: #000;
+      opacity: 0.04;
+      top: -140px;
+      left: -40px;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .manifesto blockquote {
+      position: relative;
+      z-index: 1;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(36px, 5vw, 72px);
+      letter-spacing: 0.06em;
+      color: #000;
+      line-height: 1.1;
+      max-width: 900px;
+      margin: 0 auto 24px;
+    }
+    .manifesto-attr {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: #00000080;
+      text-transform: uppercase;
+    }
+
+    /* ── MEDIA ───────────────────────────────────────────────────── */
+    .media-section { background: var(--bg-dark); }
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .media-card {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 32px 28px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+    }
+    .media-card:hover { border-color: var(--neon-teal); transform: translateY(-4px); }
+    .mc-icon {
+      font-size: 36px;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .mc-cat {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--neon-teal);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .mc-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 28px;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .mc-body {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── SOCIAL ROW ─────────────────────────────────────────────── */
+    .social-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 60px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .social-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-right: 12px;
+    }
+    .social-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .social-btn:hover {
+      border-color: var(--neon-teal);
+      color: var(--neon-teal);
+      background: #00f5c808;
+    }
+
+    /* ── CTA SECTION ────────────────────────────────────────────── */
+    .cta-section {
+      padding: 120px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-teal), transparent);
+    }
+    .cta-bg-text {
+      position: absolute;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(120px, 18vw, 240px);
+      letter-spacing: 0.04em;
+      color: var(--neon-teal);
+      opacity: 0.04;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .cta-content { position: relative; z-index: 1; }
+    .cta-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(52px, 7vw, 96px);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .cta-title .neon { color: var(--neon-amber); }
+    .cta-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 19px;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+    .cta-email {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      color: var(--neon-teal);
+      letter-spacing: 0.1em;
+      display: block;
+      margin-top: 32px;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      background: #030403;
+      border-top: 1px solid var(--border);
+      padding: 48px 60px;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+    }
+    .footer-logo span { color: var(--neon-teal); }
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--neon-teal); }
+
+    /* ── ANIMATIONS ─────────────────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 60px 28px 40px; }
+      .hero-right { height: 300px; }
+      .hero-stat-bar { left: 28px; bottom: 20px; gap: 28px; }
+      section { padding: 60px 28px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .biz-grid { grid-template-columns: 1fr; gap: 2px; }
+      .community-grid { grid-template-columns: 1fr; gap: 40px; }
+      .media-grid { grid-template-columns: 1fr; }
+      .social-bar { padding: 40px 28px; }
+      .cta-section { padding: 80px 28px; }
+      footer { padding: 36px 28px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .manifesto { padding: 60px 28px; }
+      .biz-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+    @media (max-width: 600px) {
+      .hero-stat-bar { position: relative; bottom: auto; left: auto; margin-top: 40px; }
+      .hero-left { padding-bottom: 60px; }
+    }
+
+    /* ── CUSTOM CURSOR GLOW ─────────────────────────────────────── */
+    .cursor-glow {
+      position: fixed;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #00f5c808 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      transition: left 0.15s ease, top 0.15s ease;
+    }
+  </style>
+</head>
+<body>
+
+<!-- cursor glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <span>100% Australian Owned & Operated</span>
+    <span>Supporting Indie Artists Since Day One</span>
+    <span>Artist Sponsorship Programs</span>
+    <span>Grassroots. Underground. Unstoppable.</span>
+    <span>Studio Sessions · Gig Support · Community</span>
+    <span>Oz Soundz Group — Est. Sydney 2024</span>
+    <span>100% Australian Owned & Operated</span>
+    <span>Supporting Indie Artists Since Day One</span>
+    <span>Artist Sponsorship Programs</span>
+    <span>Grassroots. Underground. Unstoppable.</span>
+    <span>Studio Sessions · Gig Support · Community</span>
+    <span>Oz Soundz Group — Est. Sydney 2024</span>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="logo-bracket">[</span>OZ SOUNDZ GROUP<span class="logo-bracket">]</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#businesses">Our Businesses</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#media">Media</a></li>
+    <li><a href="https://www.ozsoundzgroup.com.au/contact" class="nav-cta btn">Contact Us</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" style="padding:0;">
+  <div class="hero-left fade-in">
+    <div class="hero-eyebrow">Sydney, Australia — Est. 2024</div>
+    <h1 class="hero-title">
+      <div>THE OZ</div>
+      <div class="line-teal">SOUNDZ</div>
+      <div class="line-amber">GROUP</div>
+    </h1>
+    <p class="hero-subtitle">
+      Empowering <em>grassroots musicians</em> and indie artists across Australia — with the gear, studios, and community to make it happen.
+    </p>
+    <div class="hero-actions">
+      <a href="#community" class="btn btn-primary">Join The Community</a>
+      <a href="#businesses" class="btn btn-ghost">Our Businesses ↓</a>
+    </div>
+    <div class="hero-stat-bar">
+      <div class="hero-stat">
+        <div class="num">3</div>
+        <div class="label">Businesses</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">100%</div>
+        <div class="label">Aussie Owned</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">∞</div>
+        <div class="label">Indie Spirit</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-graphic">
+      <div class="wave-circle"></div>
+      <div class="wave-circle"></div>
+      <div class="wave-circle"></div>
+      <div class="wave-circle"></div>
+      <div class="hero-centre-icon">🎸</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-divider">
+  <div class="marquee-inner">
+    <span>Oz Soundz Music &amp; Audio</span>
+    <span class="hi">◆</span>
+    <span>Oz Soundz Studios</span>
+    <span class="hi">◆</span>
+    <span>Oz Soundz Records</span>
+    <span class="hi">◆</span>
+    <span>Artist Sponsorship Program</span>
+    <span class="hi">◆</span>
+    <span>Featured Indie Artists</span>
+    <span class="hi">◆</span>
+    <span>Gig Calendar</span>
+    <span class="hi">◆</span>
+    <span>Blogs &amp; Articles</span>
+    <span class="hi">◆</span>
+    <span>Oz Soundz Music &amp; Audio</span>
+    <span class="hi">◆</span>
+    <span>Oz Soundz Studios</span>
+    <span class="hi">◆</span>
+    <span>Oz Soundz Records</span>
+    <span class="hi">◆</span>
+    <span>Artist Sponsorship Program</span>
+    <span class="hi">◆</span>
+    <span>Featured Indie Artists</span>
+    <span class="hi">◆</span>
+    <span>Gig Calendar</span>
+    <span class="hi">◆</span>
+    <span>Blogs &amp; Articles</span>
+    <span class="hi">◆</span>
+  </div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section id="about" style="background: var(--bg-dark);">
+  <div class="about-grid">
+    <div class="about-visual fade-in">
+      <div class="about-box">
+        <div class="about-box-inner">
+          <div class="about-icon-large">♫</div>
+        </div>
+        <div class="about-tag-2">Community First</div>
+      </div>
+      <div class="about-tag">Est. 2024</div>
+    </div>
+    <div class="fade-in">
+      <div class="section-label">Who We Are</div>
+      <h2 class="section-title">Built From<br>The <span class="accent">Scene</span> Up</h2>
+      <p class="section-body">
+        The Oz Soundz Group is Australia's most community-driven music and audio ecosystem.
+        We're not a corporation — we're <strong>musicians who give a damn</strong> about the indie scene,
+        the underground stages, and the artists who pour everything into their craft.
+      </p>
+      <ul class="pillar-list">
+        <li class="pillar-item">
+          <span class="pillar-num">01</span>
+          <div class="pillar-content">
+            <div class="pillar-title">Artist Funding Programs</div>
+            <div class="pillar-desc">Financial support to get your projects off the ground — no label needed.</div>
+          </div>
+        </li>
+        <li class="pillar-item">
+          <span class="pillar-num">02</span>
+          <div class="pillar-content">
+            <div class="pillar-title">Sponsored Recording Sessions</div>
+            <div class="pillar-desc">Professional studio time designed for up-and-coming talent.</div>
+          </div>
+        </li>
+        <li class="pillar-item">
+          <span class="pillar-num">03</span>
+          <div class="pillar-content">
+            <div class="pillar-title">Industry Events & Networking</div>
+            <div class="pillar-desc">Connecting you with the Oz Soundz community to build your career.</div>
+          </div>
+        </li>
+        <li class="pillar-item">
+          <span class="pillar-num">04</span>
+          <div class="pillar-content">
+            <div class="pillar-title">Gear & Audio Supplies</div>
+            <div class="pillar-desc">Quality equipment at honest prices — because great music shouldn't cost the earth.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── BUSINESSES ── -->
+<section id="businesses" class="biz-section">
+  <div class="biz-header fade-in">
+    <div>
+      <div class="section-label">Our Ecosystem</div>
+      <h2 class="section-title">Three Arms,<br>One <span class="accent">Mission</span></h2>
+    </div>
+    <a href="https://www.ozsoundzgroup.com.au/our-businesses" class="btn btn-ghost">View All →</a>
+  </div>
+  <div class="biz-grid">
+    <a href="https://www.ozsoundzgroup.com.au/our-businesses/oz-soundz-music-audio" class="biz-card fade-in">
+      <span class="biz-icon">🎵</span>
+      <div class="biz-card-label">Retail & Gear</div>
+      <div class="biz-card-title">Oz Soundz Music & Audio</div>
+      <div class="biz-card-body">Strings, cables, sticks, accessories — quality gear for real musicians at real prices. By players, for players.</div>
+      <span class="biz-arrow">↗</span>
+    </a>
+    <a href="https://www.ozsoundzgroup.com.au/our-businesses/oz-soundz-studios" class="biz-card fade-in">
+      <span class="biz-icon">🎙️</span>
+      <div class="biz-card-label">Recording</div>
+      <div class="biz-card-title">Oz Soundz Studios</div>
+      <div class="biz-card-body">Professional recording and audio production services built for indie artists — affordable, no compromises on quality.</div>
+      <span class="biz-arrow">↗</span>
+    </a>
+    <a href="https://www.ozsoundzgroup.com.au/our-businesses/oz-soundz-records" class="biz-card fade-in">
+      <span class="biz-icon">💿</span>
+      <div class="biz-card-label">Label</div>
+      <div class="biz-card-title">Oz Soundz Records</div>
+      <div class="biz-card-body">An indie record label that actually has your back — putting Australian artists on the map without selling out.</div>
+      <span class="biz-arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── MANIFESTO ── -->
+<div class="manifesto fade-in">
+  <blockquote>
+    "The future of the industry lies in supporting the underdogs."
+  </blockquote>
+  <div class="manifesto-attr">— The Oz Soundz Group Manifesto</div>
+</div>
+
+<!-- ── COMMUNITY ── -->
+<section id="community" style="background: var(--bg-deepest);">
+  <div class="community-grid">
+    <div class="community-feature fade-in">
+      <div class="cf-eyebrow">Artist Sponsorship Program</div>
+      <h2 class="cf-title">We Back<br>The Underdogs</h2>
+      <p class="cf-body">
+        Every order placed across the Oz Soundz ecosystem goes back into the scene. Sponsorships, studio time, gig support — for indie artists trying to break through without breaking the bank. That's not a marketing line. <strong>That's why we exist.</strong>
+      </p>
+      <a href="https://www.ozsoundzgroup.com.au/our-community/artist-sponsorship-program" class="btn btn-primary">Apply For Sponsorship</a>
+    </div>
+    <div class="fade-in">
+      <div class="section-label">Community Hub</div>
+      <h3 style="font-family: 'Bebas Neue', cursive; font-size: 36px; letter-spacing: 0.06em; margin-bottom: 24px;">Get Involved</h3>
+      <div class="community-links">
+        <a href="https://www.ozsoundzgroup.com.au/our-community/featured-indie-artists" class="community-link">
+          <div class="cl-left">
+            <span class="cl-icon">🎤</span>
+            <div>
+              <div class="cl-title">Featured Indie Artists</div>
+              <div class="cl-sub">Spotlight on the scene</div>
+            </div>
+          </div>
+          <span class="cl-arrow">→</span>
+        </a>
+        <a href="https://www.ozsoundzgroup.com.au/our-community/gig-calendar" class="community-link">
+          <div class="cl-left">
+            <span class="cl-icon">🗓️</span>
+            <div>
+              <div class="cl-title">Gig Calendar</div>
+              <div class="cl-sub">Find your next show</div>
+            </div>
+          </div>
+          <span class="cl-arrow">→</span>
+        </a>
+        <a href="https://www.ozsoundzgroup.com.au/our-community/gig-photos-videos" class="community-link">
+          <div class="cl-left">
+            <span class="cl-icon">📸</span>
+            <div>
+              <div class="cl-title">Gig Photos & Videos</div>
+              <div class="cl-sub">Relive the moments</div>
+            </div>
+          </div>
+          <span class="cl-arrow">→</span>
+        </a>
+        <a href="https://www.ozsoundzgroup.com.au/about-us/our-purpose" class="community-link">
+          <div class="cl-left">
+            <span class="cl-icon">🌱</span>
+            <div>
+              <div class="cl-title">Our Purpose</div>
+              <div class="cl-sub">The why behind everything</div>
+            </div>
+          </div>
+          <span class="cl-arrow">→</span>
+        </a>
+        <a href="https://www.ozsoundzgroup.com.au/about-us/our-team" class="community-link">
+          <div class="cl-left">
+            <span class="cl-icon">🤝</span>
+            <div>
+              <div class="cl-title">Our Team</div>
+              <div class="cl-sub">The crew behind the noise</div>
+            </div>
+          </div>
+          <span class="cl-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MEDIA ── -->
+<section id="media" class="media-section">
+  <div class="fade-in">
+    <div class="section-label">Stay Wired In</div>
+    <h2 class="section-title">Our <span class="accent">Media</span></h2>
+  </div>
+  <div class="media-grid">
+    <a href="https://www.ozsoundzgroup.com.au/our-media/blogs-articles" class="media-card fade-in">
+      <span class="mc-icon">📝</span>
+      <div class="mc-cat">Blogs & Articles</div>
+      <div class="mc-title">From The Underground</div>
+      <div class="mc-body">Deep dives, artist stories, industry takes — written by musicians for musicians.</div>
+    </a>
+    <a href="https://www.ozsoundzgroup.com.au/our-media/podcasts" class="media-card fade-in">
+      <span class="mc-icon">🎧</span>
+      <div class="mc-cat">Podcasts</div>
+      <div class="mc-title">On The Air</div>
+      <div class="mc-body">Candid conversations with artists, producers, and scene-makers from around Australia.</div>
+    </a>
+    <a href="https://www.ozsoundzgroup.com.au/our-media/social-media" class="media-card fade-in">
+      <span class="mc-icon">📡</span>
+      <div class="mc-cat">Social Media</div>
+      <div class="mc-title">Follow The Signal</div>
+      <div class="mc-body">Real-time updates, artist features, and community moments across all platforms.</div>
+    </a>
+  </div>
+</section>
+
+<!-- ── SOCIAL BAR ── -->
+<div class="social-bar fade-in">
+  <span class="social-label">Find us on</span>
+  <a href="https://facebook.com/ozsoundz" class="social-btn">Facebook</a>
+  <a href="https://instagram.com/ozsoundz" class="social-btn">Instagram</a>
+  <a href="https://tiktok.com/@ozsoundz" class="social-btn">TikTok</a>
+  <a href="https://youtube.com/@ozsoundz" class="social-btn">YouTube</a>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta-section fade-in">
+  <div class="cta-bg-text">JOIN US</div>
+  <div class="cta-content">
+    <div class="section-label" style="justify-content: center;">Ready?</div>
+    <h2 class="cta-title">Let's Build<br>Australian Music <span class="neon">Together</span></h2>
+    <p class="cta-sub">Whether you're a solo artist, a band, or just someone who believes in real music — there's a place for you here.</p>
+    <a href="https://www.ozsoundzgroup.com.au/contact" class="btn btn-primary">Get In Touch</a>
+    <a href="mailto:info@ozsoundz.com.au" class="cta-email">info@ozsoundz.com.au</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><span>[</span>OZ SOUNDZ GROUP<span>]</span></div>
+    <ul class="footer-links">
+      <li><a href="https://www.ozsoundzgroup.com.au/home">Home</a></li>
+      <li><a href="https://www.ozsoundzgroup.com.au/about-us">About</a></li>
+      <li><a href="https://www.ozsoundzgroup.com.au/our-businesses">Businesses</a></li>
+      <li><a href="https://www.ozsoundzgroup.com.au/our-community">Community</a></li>
+      <li><a href="https://www.ozsoundzgroup.com.au/contact">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 The Oz Soundz Group · Sydney, AU<br>100% Australian owned & operated</div>
+  </div>
+</footer>
+
+<script>
+  // Cursor glow
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Hero loads immediately
+  document.querySelectorAll('.hero .fade-in').forEach(el => {
+    el.classList.add('visible');
+  });
+
+  // Hamburger (basic toggle for demo)
+  function toggleMenu() {
+    const nl = document.querySelector('.nav-links');
+    if (nl.style.display === 'flex') {
+      nl.style.display = 'none';
+    } else {
+      nl.style.cssText = 'display:flex; flex-direction:column; position:absolute; top:64px; left:0; right:0; background:#0e110e; padding:24px 28px; gap:20px; border-bottom: 1px solid #1e261e;';
+    }
+  }
+</script>
+</body>
+</html>

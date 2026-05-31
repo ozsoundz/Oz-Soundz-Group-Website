@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — The Oz Soundz Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.contact-form { display:flex; flex-direction:column; gap:20px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-group { display:flex; flex-direction:column; gap:8px; }
+.form-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-muted); }
+.form-input, .form-textarea, .form-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--neon-teal); }
+.form-textarea { min-height: 140px; resize: vertical; }
+.form-select option { background: var(--bg-card); }
+@media(max-width:600px){ .form-row{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="ticker-wrap"><div class="ticker-track" id="ticker">
+<span>100% Australian Owned &amp; Operated</span><span>Supporting Indie Artists Since Day One</span>
+<span>Artist Sponsorship Programs</span><span>Grassroots. Underground. Unstoppable.</span>
+<span>Studio Sessions · Gig Support · Community</span><span>Oz Soundz Group — Est. Sydney 2024</span>
+<span>100% Australian Owned &amp; Operated</span><span>Supporting Indie Artists Since Day One</span>
+<span>Artist Sponsorship Programs</span><span>Grassroots. Underground. Unstoppable.</span>
+<span>Studio Sessions · Gig Support · Community</span><span>Oz Soundz Group — Est. Sydney 2024</span>
+</div></div>
+<nav>
+  <a href="index.html" class="nav-logo"><span class="lb">[</span>OZ SOUNDZ GROUP<span class="lb">]</span></a>
+  <ul class="nav-links"><li><a href="index.html" class="active">Home</a></li><li class="nav-item"><a href="about-us/index.html" >About Us</a><div class="dropdown"><a href="about-us/our-purpose.html">Our Purpose</a><a href="about-us/our-team.html">Our Team</a></div></li><li class="nav-item"><a href="our-businesses/index.html" >Our Businesses</a><div class="dropdown"><a href="our-businesses/music-audio.html">Music & Audio</a><a href="our-businesses/studios.html">Oz Soundz Studios</a><a href="our-businesses/records.html">Oz Soundz Records</a></div></li><li class="nav-item"><a href="our-community/index.html" >Our Community</a><div class="dropdown"><a href="our-community/sponsorship.html">Artist Sponsorship</a><a href="our-community/featured-artists.html">Featured Artists</a><a href="our-community/gig-calendar.html">Gig Calendar</a><a href="our-community/gig-photos.html">Gig Photos & Videos</a></div></li><li class="nav-item"><a href="our-media/index.html" >Our Media</a><div class="dropdown"><a href="our-media/blogs.html">Blogs & Articles</a><a href="our-media/social.html">Social Media</a><a href="our-media/podcasts.html">Podcasts</a></div></li><li><a href="contact.html" class="nav-cta">Contact Us</a></li></ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="page-banner">
+  <div class="page-banner-bg-text">CONTACT</div>
+  <div class="page-banner-content fade-in">
+    <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>Contact</span></div>
+    <h1 class="page-title">CONTACT<br><span class="accent">US</span></h1>
+    <p class="page-subtitle">Got a question, a collaboration in mind, or just want to say g'day? We're all ears.</p>
+  </div>
+</div>
+<section class="section section-dark">
+  <div class="two-col">
+    <div class="fade-in">
+      <div class="section-label">Send A Message</div>
+      <h2 class="section-title">Let's <span class="accent">Talk</span></h2>
+      <div class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="Jason"></div>
+          <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Plumridge"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="you@yourband.com.au"></div>
+        <div class="form-group"><label class="form-label">Subject</label>
+          <select class="form-select">
+            <option value="">Select a topic...</option>
+            <option>General Enquiry</option>
+            <option>Artist Sponsorship Program</option>
+            <option>Get Featured (Artist Spotlight)</option>
+            <option>Submit a Gig</option>
+            <option>Oz Soundz Studios (Register Interest)</option>
+            <option>Oz Soundz Records (Register Interest)</option>
+            <option>Podcast — Be A Guest</option>
+            <option>Blog — Pitch An Article</option>
+            <option>Media / Press Enquiry</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Your Message</label><textarea class="form-textarea" placeholder="Tell us what's on your mind..."></textarea></div>
+        <div>
+          <button onclick="handleSubmit()" class="btn btn-primary" style="width:100%;text-align:center;cursor:pointer;border:none;">Send Message</button>
+          <p style="font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:12px;letter-spacing:.08em;">Or email us directly: <a href="mailto:info@ozsoundz.com.au" style="color:var(--neon-teal);">info@ozsoundz.com.au</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="fade-in">
+      <div class="section-label">Other Ways To Reach Us</div>
+      <h2 class="section-title">Direct <span class="amber">Lines</span></h2>
+      <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:40px;margin-top:8px;">
+        <div style="padding:20px 24px;border:1px solid var(--border);background:var(--bg-card);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--neon-teal);margin-bottom:6px;">Email</div>
+          <a href="mailto:info@ozsoundz.com.au" style="font-family:'Space Mono',monospace;font-size:14px;color:var(--text-primary);text-decoration:none;">info@ozsoundz.com.au</a>
+        </div>
+        <div style="padding:20px 24px;border:1px solid var(--border);background:var(--bg-card);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--neon-teal);margin-bottom:6px;">Location</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:300;color:var(--text-muted);">Sydney, NSW, Australia</div>
+        </div>
+        <div style="padding:20px 24px;border:1px solid var(--border);background:var(--bg-card);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--neon-teal);margin-bottom:6px;">ABN</div>
+          <div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--text-muted);">45 147 744 858 (Vestinex Pty Ltd)</div>
+        </div>
+      </div>
+      <div class="section-label" style="margin-bottom:16px;">Quick Links</div>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <a href="our-community/sponsorship.html" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--border);text-decoration:none;color:var(--text-muted);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--bg-card);transition:color .2s,border-color .2s;">Artist Sponsorship <span style="color:var(--neon-teal)">→</span></a>
+        <a href="our-community/featured-artists.html" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--border);text-decoration:none;color:var(--text-muted);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--bg-card);transition:color .2s,border-color .2s;">Get Featured <span style="color:var(--neon-teal)">→</span></a>
+        <a href="our-community/gig-calendar.html" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--border);text-decoration:none;color:var(--text-muted);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--bg-card);transition:color .2s,border-color .2s;">Submit A Gig <span style="color:var(--neon-teal)">→</span></a>
+        <a href="https://ozsoundz.com.au" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--border);text-decoration:none;color:var(--text-muted);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--bg-card);transition:color .2s,border-color .2s;">Shop Music &amp; Audio <span style="color:var(--neon-teal)">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function handleSubmit() {
+  const btn = document.querySelector('#contactForm .btn-primary');
+  btn.textContent = "Message Sent ✓";
+  btn.style.background = "#1a3a2a";
+  btn.style.color = "var(--neon-teal)";
+  btn.style.borderColor = "var(--neon-teal)";
+  btn.disabled = true;
+  setTimeout(() => {
+    window.location.href = "mailto:info@ozsoundz.com.au";
+  }, 800);
+}
+</script>
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-logo"><span>[</span>OZ SOUNDZ GROUP<span>]</span></span>
+      <p class="footer-tagline">Australia's most community-driven music &amp; audio ecosystem. Built from the scene up. For the ones who play for love.</p>
+      <div class="footer-socials">
+        <a href="https://facebook.com/ozsoundz" class="footer-social">Facebook</a>
+        <a href="https://instagram.com/ozsoundz" class="footer-social">Instagram</a>
+        <a href="https://tiktok.com/@ozsoundz" class="footer-social">TikTok</a>
+        <a href="https://youtube.com/@ozsoundz" class="footer-social">YouTube</a>
+        <a href="https://x.com/ozsoundz" class="footer-social">X/Twitter</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">About</div>
+      <ul>
+        <li><a href="about-us/index.html">About Us</a></li>
+        <li><a href="about-us/our-purpose.html">Our Purpose</a></li>
+        <li><a href="about-us/our-team.html">Our Team</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Businesses</div>
+      <ul>
+        <li><a href="our-businesses/music-audio.html">Music &amp; Audio</a></li>
+        <li><a href="our-businesses/studios.html">Studios</a></li>
+        <li><a href="our-businesses/records.html">Records</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Community</div>
+      <ul>
+        <li><a href="our-community/sponsorship.html">Sponsorship</a></li>
+        <li><a href="our-community/featured-artists.html">Featured Artists</a></li>
+        <li><a href="our-community/gig-calendar.html">Gig Calendar</a></li>
+        <li><a href="our-community/gig-photos.html">Gig Photos</a></li>
+        <li><a href="our-media/blogs.html">Blog</a></li>
+        <li><a href="our-media/podcasts.html">Podcasts</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 The Oz Soundz Group · Sydney, NSW, Australia · A subsidiary of Vestinex Pty Ltd</div>
+    <div class="footer-abn">ABN: 45 147 744 858 · <a href="mailto:info@ozsoundz.com.au" style="color:var(--neon-teal);text-decoration:none;">info@ozsoundz.com.au</a></div>
+  </div>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>
